@@ -5,15 +5,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.AlarmClock;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnOpenActivity,btnSend,btnSendData;
+    Button btnOpenActivity,btnSend,btnSendData,btnSetAlarm;
     EditText editMessage;
-
+    Spinner selectHoures,selectMinutes;
+    List<String> houresList = new ArrayList<String>();
+    List<String> minutesList = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +30,24 @@ public class MainActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btnSend);
         btnSendData = findViewById(R.id.btnSendData);
         editMessage = findViewById(R.id.editMessage);
+        selectHoures = findViewById(R.id.selectHour);
+        selectMinutes = findViewById(R.id.selectMinute);
+        btnSetAlarm = findViewById(R.id.btnSetAlarm);
+
+        for(int i=0;i<24;i++){
+            houresList.add(""+i);
+        }
+        for(int i=0;i<60;i++){
+            minutesList.add(""+i);
+        }
+
+        ArrayAdapter<String> houtesAdaper = new ArrayAdapter(this, android.R.layout.simple_spinner_item,houresList);
+        selectHoures.setAdapter(houtesAdaper);
+
+        ArrayAdapter<String> minutesAdaper = new ArrayAdapter(this, android.R.layout.simple_spinner_item,minutesList);
+        selectMinutes.setAdapter(minutesAdaper);
+
+
 
         btnOpenActivity.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +81,22 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("title",editMessage.getText().toString());
                 startActivity(intent);
 
+            }
+        });
+
+        btnSetAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO : créer une alarme avec le données heures, minutes et un message (nécessite la permission :com.android.alarm.permission.SET_ALARM)
+                int h = selectHoures.getSelectedItemPosition() + 1;
+                int m = selectMinutes.getSelectedItemPosition() + 1;
+                String msg = editMessage.getText().toString();
+                Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM);
+                intent.putExtra(AlarmClock.EXTRA_HOUR,h);
+                intent.putExtra(AlarmClock.EXTRA_MINUTES,m);
+                intent.putExtra(AlarmClock.EXTRA_MESSAGE,msg);
+                intent.putExtra(AlarmClock.EXTRA_VIBRATE,true);
+                startActivity(intent);
             }
         });
     }
