@@ -104,6 +104,22 @@
             android:layout_margin="5dp"
             android:text="Set Alarm" />
 
+        <Button
+            android:id="@+id/btnShowMap"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+            android:text="Show Map" />
+
+        <Button
+            android:id="@+id/btnShowCamera"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+            android:text="Show Camera" />
+
 
     </GridLayout>
 
