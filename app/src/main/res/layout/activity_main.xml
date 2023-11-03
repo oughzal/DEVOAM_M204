@@ -13,27 +13,44 @@
         android:id="@+id/targetImage"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:src="@drawable/ic_launcher_foreground" />
+        android:src="@drawable/ic_photo" />
+
+    <EditText
+        android:id="@+id/editMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Message" />
 
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:columnCount="3"
+        android:columnCount="2"
         android:textAlignment="center">
 
         <Button
             android:id="@+id/btnOpenActivity"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
             android:text="Open Activity" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:id="@+id/btnSend"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Button 1" />
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+            android:text="Partager" />
+
+        <Button
+            android:id="@+id/btnSendData"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+            android:text="Send Data" />
 
 
     </GridLayout>
