@@ -7,10 +7,13 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,16 +40,18 @@ public class MainActivity extends AppCompatActivity {
     });
 
 
-    Button btnOpenActivity, btnSend, btnSendData, btnShowMap,btnShowCamera,btnDialPhone,btnOpenUrl,btnShowGallery;
+    Button btnOpenActivity, btnSend, btnSendData, btnShowMap, btnShowCamera, btnDialPhone, btnOpenUrl, btnShowGallery;
     EditText editMessage;
+
     ImageView targetImage;
 
-    ActivityResultLauncher<Intent> chooseImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result ->{
-        if(result.getResultCode() == RESULT_OK && result.getData()!=null){
+    ActivityResultLauncher<Intent> chooseImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK && result.getData() != null) {
             Uri uri = result.getData().getData();
             targetImage.setImageURI(uri);
         }
     });
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +63,10 @@ public class MainActivity extends AppCompatActivity {
         editMessage = findViewById(R.id.editMessage);
         btnShowMap = findViewById(R.id.btnShowMap);
         btnShowCamera = findViewById(R.id.btnShowCamera);
-        btnShowGallery= findViewById(R.id.btnShowGallery);
+        btnShowGallery = findViewById(R.id.btnShowGallery);
         btnDialPhone = findViewById(R.id.btnDialPhone);
         btnOpenUrl = findViewById(R.id.btnOpenUrl);
         targetImage = findViewById(R.id.targetImage);
-
 
 
         btnOpenActivity.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Pass the Uri directly to the Intent constructor
                 Intent intent = new Intent(Intent.ACTION_VIEW, geoLocUri);
-                Intent chooser = Intent.createChooser(intent,"");
+                Intent chooser = Intent.createChooser(intent, "");
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(chooser);
                 }
@@ -124,8 +129,13 @@ public class MainActivity extends AppCompatActivity {
         btnShowCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (checkPermision(Manifest.permission.CAMERA)) {
+                    photoLauncher.launch(null);
+                } else {
+                    requestPermision(Manifest.permission.CAMERA);
+                }
 
-                 photoLauncher.launch(null);
+
                  /*
                  Old method : not working
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -140,28 +150,35 @@ public class MainActivity extends AppCompatActivity {
         btnShowGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                chooseImage.launch(intent);
 
             }
         });
         btnDialPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String uri ="tel:0663560419";
-                Intent intent =  new Intent(Intent.ACTION_CALL, Uri.parse(uri));
-                if(intent.resolveActivity(getPackageManager())!=null){
-                    startActivity(intent);
+                if(checkPermision(Manifest.permission.CALL_PHONE)){
+                    String uri = "tel:0663560419";
+                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(uri));
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(intent);
+                    }
+                }else {
+                    requestPermision(Manifest.permission.CALL_PHONE);
                 }
+
             }
         });
 
         btnOpenUrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url ="https://www.ofppt.ma";
+                String url = "https://www.ofppt.ma";
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
-                if(intent.resolveActivity(getPackageManager())!=null){
+                if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
                 }
 
@@ -169,10 +186,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private boolean checkPermision(String permission) {
+
+        return ActivityCompat.checkSelfPermission(getApplicationContext(), permission) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermision(String permision) {
+        if (!checkPermision(permision)) {
+            ActivityCompat.requestPermissions(this, new String[]{permision}, 1111);
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==GET_IMAGE_CAPTURE && resultCode ==RESULT_OK){
+        if (resultCode == GET_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             targetImage.setImageBitmap(imageBitmap);
