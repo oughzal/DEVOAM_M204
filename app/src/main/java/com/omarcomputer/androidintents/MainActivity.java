@@ -95,10 +95,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO : Afficher une position sur la carte
-                String location = "geo:37.4220,-122.0841";
-                //String location = "geo:0,0?q=37.4220,-122.0841(GooglePlex)";
+                //String location = "geo:32.94988983365049, -5.662560173657064";
+                String location = "geo:0,0?q=32.94988983365049, -5.662560173657064(ISTA KHENIFRA(DEV201))";
                 //String location = "geo:0,0?q=20+W+34th+St+10001";
-                //String location = "geo:47.6205,-122.3493?q=restaurants";
+                //String location = "geo:32.94988983365049, -5.662560173657064?q=restaurants";
 
                 // Parse the location using the Uri class
                 Uri geoLocUri = Uri.parse(location);
