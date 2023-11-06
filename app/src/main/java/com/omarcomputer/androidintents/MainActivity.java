@@ -1,9 +1,17 @@
 package com.omarcomputer.androidintents;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.AlarmClock;
@@ -12,18 +20,24 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private final static int GET_IMAGE_CAPTURE = 1000;
+    ActivityResultLauncher<Void> photoLauncher = registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), new ActivityResultCallback<Bitmap>() {
+        @Override
+        public void onActivityResult(Bitmap result) {
+            targetImage.setImageBitmap(result);
+        }
+    });
 
-    Button btnOpenActivity, btnSend, btnSendData, btnSetAlarm, btnShowMap,btnShowCamera;
+    Button btnOpenActivity, btnSend, btnSendData, btnShowMap,btnShowCamera,btnDialPhone,btnOpenUrl;
     EditText editMessage;
-    Spinner selectHoures, selectMinutes;
-    List<String> houresList = new ArrayList<String>();
-    List<String> minutesList = new ArrayList<String>();
+    ImageView targetImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,24 +47,12 @@ public class MainActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btnSend);
         btnSendData = findViewById(R.id.btnSendData);
         editMessage = findViewById(R.id.editMessage);
-        selectHoures = findViewById(R.id.selectHour);
-        selectMinutes = findViewById(R.id.selectMinute);
-        btnSetAlarm = findViewById(R.id.btnSetAlarm);
         btnShowMap = findViewById(R.id.btnShowMap);
         btnShowCamera = findViewById(R.id.btnShowCamera);
+        btnDialPhone = findViewById(R.id.btnDialPhone);
+        btnOpenUrl = findViewById(R.id.btnOpenUrl);
+        targetImage = findViewById(R.id.targetImage);
 
-        for (int i = 0; i < 24; i++) {
-            houresList.add("" + i);
-        }
-        for (int i = 0; i < 60; i++) {
-            minutesList.add("" + i);
-        }
-
-        ArrayAdapter<String> houtesAdaper = new ArrayAdapter(this, android.R.layout.simple_spinner_item, houresList);
-        selectHoures.setAdapter(houtesAdaper);
-
-        ArrayAdapter<String> minutesAdaper = new ArrayAdapter(this, android.R.layout.simple_spinner_item, minutesList);
-        selectMinutes.setAdapter(minutesAdaper);
 
 
         btnOpenActivity.setOnClickListener(new View.OnClickListener() {
@@ -88,23 +90,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnSetAlarm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO : créer une alarme avec le données heures, minutes et un message (nécessite la permission :com.android.alarm.permission.SET_ALARM)
-                int h = selectHoures.getSelectedItemPosition() + 1;
-                int m = selectMinutes.getSelectedItemPosition() + 1;
-                String msg = editMessage.getText().toString();
-                Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM);
-                intent.putExtra(AlarmClock.EXTRA_HOUR, h);
-                intent.putExtra(AlarmClock.EXTRA_MINUTES, m);
-                intent.putExtra(AlarmClock.EXTRA_MESSAGE, msg);
-                intent.putExtra(AlarmClock.EXTRA_VIBRATE, true);
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                }
-            }
-        });
 
         btnShowMap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,15 +115,52 @@ public class MainActivity extends AppCompatActivity {
         btnShowCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Take a picture and consume the returned result bitmap
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
+                 photoLauncher.launch(null);
+                 /*
+                 Old method : not working
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (intent.resolveActivity(getPackageManager()) != null) {
+                   // startActivityForResult(intent,GET_IMAGE_CAPTURE);
+                }
+
+                  */
+            }
+        });
+        btnDialPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String uri ="tel:0663560419";
+                Intent intent =  new Intent(Intent.ACTION_CALL, Uri.parse(uri));
+                if(intent.resolveActivity(getPackageManager())!=null){
                     startActivity(intent);
                 }
             }
         });
+
+        btnOpenUrl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url ="https://www.ofppt.ma";
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                if(intent.resolveActivity(getPackageManager())!=null){
+                    startActivity(intent);
+                }
+
+            }
+        });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==GET_IMAGE_CAPTURE && resultCode ==RESULT_OK){
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            targetImage.setImageBitmap(imageBitmap);
 
+        }
+    }
 }

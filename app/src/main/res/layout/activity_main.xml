@@ -15,59 +15,17 @@
         android:layout_height="300dp"
         android:src="@drawable/ic_photo" />
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/editMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Message" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Houres" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Minutes" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/editMessage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Message" />
-
-        <Spinner
-            android:id="@+id/selectHour"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <Spinner
-            android:id="@+id/selectMinute"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-    </LinearLayout>
+        android:text="Message" />
 
 
     <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:columnCount="2"
         android:textAlignment="center">
@@ -96,13 +54,6 @@
             android:layout_margin="5dp"
             android:text="Send Data" />
 
-        <Button
-            android:id="@+id/btnSetAlarm"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="5dp"
-            android:text="Set Alarm" />
 
         <Button
             android:id="@+id/btnShowMap"
@@ -119,6 +70,22 @@
             android:layout_columnWeight="1"
             android:layout_margin="5dp"
             android:text="Show Camera" />
+
+        <Button
+            android:id="@+id/btnDialPhone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+            android:text="Appeler" />
+
+        <Button
+            android:id="@+id/btnOpenUrl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+            android:text="Open URL" />
 
 
     </GridLayout>
