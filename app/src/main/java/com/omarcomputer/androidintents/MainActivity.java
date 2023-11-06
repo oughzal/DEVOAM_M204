@@ -35,9 +35,17 @@ public class MainActivity extends AppCompatActivity {
         }
     });
 
-    Button btnOpenActivity, btnSend, btnSendData, btnShowMap,btnShowCamera,btnDialPhone,btnOpenUrl;
+
+    Button btnOpenActivity, btnSend, btnSendData, btnShowMap,btnShowCamera,btnDialPhone,btnOpenUrl,btnShowGallery;
     EditText editMessage;
     ImageView targetImage;
+
+    ActivityResultLauncher<Intent> chooseImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result ->{
+        if(result.getResultCode() == RESULT_OK && result.getData()!=null){
+            Uri uri = result.getData().getData();
+            targetImage.setImageURI(uri);
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         editMessage = findViewById(R.id.editMessage);
         btnShowMap = findViewById(R.id.btnShowMap);
         btnShowCamera = findViewById(R.id.btnShowCamera);
+        btnShowGallery= findViewById(R.id.btnShowGallery);
         btnDialPhone = findViewById(R.id.btnDialPhone);
         btnOpenUrl = findViewById(R.id.btnOpenUrl);
         targetImage = findViewById(R.id.targetImage);
@@ -125,6 +134,13 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                   */
+            }
+        });
+
+        btnShowGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
         btnDialPhone.setOnClickListener(new View.OnClickListener() {
