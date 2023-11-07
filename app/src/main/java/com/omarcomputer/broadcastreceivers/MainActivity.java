@@ -1,7 +1,6 @@
 package com.omarcomputer.broadcastreceivers;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -10,10 +9,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.omarcomputer.broadcastreceivers.broadcastreceiver.ChargingReceiver;
+import com.omarcomputer.broadcastreceivers.broadcastreceiver.MyReceiver;
 
 public class MainActivity extends AppCompatActivity {
-    ChargingReceiver receiver;
+    MyReceiver receiver;
     Button btnSendBroadcast;
 
 
@@ -36,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        receiver = new ChargingReceiver();
+        receiver = new MyReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_POWER_CONNECTED);
         filter.addAction(Intent.ACTION_POWER_DISCONNECTED);
