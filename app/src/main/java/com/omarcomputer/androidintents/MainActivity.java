@@ -8,14 +8,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.provider.MediaStore;
@@ -40,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     });
 
 
-    Button btnOpenActivity, btnSend, btnSendData, btnShowMap, btnShowCamera, btnDialPhone, btnOpenUrl, btnShowGallery;
+    Button btnOpenActivity, btnSend, btnSendData, btnShowMap, btnShowCamera, btnDialPhone, btnOpenUrl, btnShowGallery, btnShowNotification;
     EditText editMessage;
 
     ImageView targetImage;
@@ -65,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         btnShowCamera = findViewById(R.id.btnShowCamera);
         btnShowGallery = findViewById(R.id.btnShowGallery);
         btnDialPhone = findViewById(R.id.btnDialPhone);
+        btnShowNotification = findViewById(R.id.btnShowNotification);
         btnOpenUrl = findViewById(R.id.btnOpenUrl);
         targetImage = findViewById(R.id.targetImage);
 
@@ -158,13 +167,13 @@ public class MainActivity extends AppCompatActivity {
         btnDialPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkPermision(Manifest.permission.CALL_PHONE)){
+                if (checkPermision(Manifest.permission.CALL_PHONE)) {
                     String uri = "tel:0663560419";
                     Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(uri));
                     if (intent.resolveActivity(getPackageManager()) != null) {
                         startActivity(intent);
                     }
-                }else {
+                } else {
                     requestPermision(Manifest.permission.CALL_PHONE);
                 }
 
@@ -181,6 +190,15 @@ public class MainActivity extends AppCompatActivity {
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
                 }
+
+            }
+        });
+
+        btnShowNotification.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("MissingPermission")
+            @Override
+            public void onClick(View view) {
+                postNottification();
 
             }
         });
@@ -206,5 +224,36 @@ public class MainActivity extends AppCompatActivity {
             targetImage.setImageBitmap(imageBitmap);
 
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void postNottification(){
+        String channelId = "CHANNEL_ID_NOTIFICATION";
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(),channelId );
+        builder.setSmallIcon(R.drawable.ic_notification);
+        builder.setContentTitle("DEV201");
+        builder.setContentText("Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus doloremque cumque eveniet temporibus");
+        builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        builder.setAutoCancel(true);
+
+        Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+        intent.putExtra("title","From notification");
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        builder.setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Mon canal de notification";
+            String description = "Description du canal de notification";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(channelId, name, importance);
+            channel.setDescription(description);
+            channel.setLightColor(Color.RED);
+            channel.enableVibration(true);
+            notificationManager.createNotificationChannel(channel);
+        }
+        notificationManager.notify(0, builder.build());
     }
 }
