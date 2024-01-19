@@ -23,8 +23,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnScheduleJob.setOnClickListener {
-            scheduleJob(this)
-            Toast.makeText(this, "Job scheduled", Toast.LENGTH_LONG).show()
+            if (scheduleJob(this) == JobScheduler.RESULT_SUCCESS) {
+                Toast.makeText(this, "Job scheduled with success", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "Job not scheduled with success", Toast.LENGTH_LONG).show()
+            }
+
         }
         binding.btnCancelJob.setOnClickListener {
             jobScheduler.cancel(JOB_ID)
@@ -34,15 +38,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun scheduleJob(context: Context) {
+    fun scheduleJob(context: Context): Int {
         //TODO : initialisation de jobScheduler
-        val componentName = ComponentName(this, MyJobService::class.java)
-        val builder = JobInfo.Builder(JOB_ID, componentName)
+        val builder = JobInfo.Builder(JOB_ID, ComponentName(this, MyJobService::class.java))
             .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
             .setRequiresBatteryNotLow(true)
             .setPeriodic(15 * 60 * 1000)
-        val jobInfo = builder.build()
         jobScheduler = context.getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
-        jobScheduler.schedule(jobInfo)
+        return jobScheduler.schedule(builder.build())
     }
 }
