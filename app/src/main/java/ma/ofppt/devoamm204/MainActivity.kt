@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     lateinit var jobScheduler: JobScheduler
     val JOB_ID = 1000
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,13 +34,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun scheduleJob(context: Context){
+    fun scheduleJob(context: Context) {
         //TODO : initialisation de jobScheduler
-        val componentName = ComponentName(this,MyJobService::class.java)
-        val builder = JobInfo.Builder(JOB_ID,componentName)
+        val componentName = ComponentName(this, MyJobService::class.java)
+        val builder = JobInfo.Builder(JOB_ID, componentName)
             .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
-           .setRequiresBatteryNotLow(true)
-            .setPeriodic(15*60*1000)
+            .setRequiresBatteryNotLow(true)
+            .setPeriodic(15 * 60 * 1000)
         val jobInfo = builder.build()
         jobScheduler = context.getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
         jobScheduler.schedule(jobInfo)
