@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         val builder = JobInfo.Builder(JOB_ID, ComponentName(this, MyJobService::class.java))
             .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
             .setRequiresBatteryNotLow(true)
+            .setPersisted(true)
             .setPeriodic(15 * 60 * 1000)
         jobScheduler = context.getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
         return jobScheduler.schedule(builder.build())
