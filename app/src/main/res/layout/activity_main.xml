@@ -6,12 +6,27 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity2">
 
     <TextView
+        android:id="@+id/txtProgess"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:text="Download"
+    />
+
+    <SeekBar
+        android:id="@+id/progess"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:min="0" />
+
+    <Button
+    android:id="@+id/btnSrart"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Start"
     />
 
 </LinearLayout>
