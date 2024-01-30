@@ -13,9 +13,6 @@
         android:theme="@style/Theme.DEVOAMM204"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity2"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -27,15 +24,3 @@
     </application>
 
 </manifest>
-
-
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-<application>
-    <activity
-        android:name="ma.ofppt.devoamm204.MainActivity"
-        android:exported="false"
-
-        />
-</application>
-</manifest>
-

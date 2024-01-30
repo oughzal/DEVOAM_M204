@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import ma.ofppt.devoamm204.databinding.ActivityMainBinding;
 
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             binding.txtProgess.setText(s);
+            Toast.makeText(getApplicationContext(),"Terminé",Toast.LENGTH_LONG).show();
         }
     }
 }
