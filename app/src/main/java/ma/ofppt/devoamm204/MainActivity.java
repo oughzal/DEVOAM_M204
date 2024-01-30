@@ -14,7 +14,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                // TODO : BG Task
+                //...
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+                //...
             }
         }).start();
+
+      new MyThread().start();
     }
 }
