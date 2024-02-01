@@ -12,7 +12,6 @@ public class MyAsyncTask extends AsyncTask<String,Integer,String> {
     // background ( Thread séparé)
     @Override
     protected String doInBackground(String... strings) {
-
         return null;
     }
     // UI Thread
