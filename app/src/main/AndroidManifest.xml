@@ -6,6 +6,7 @@
         android:name="android.hardware.telephony"
         android:required="false" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,6 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DEVOAMM204"
         tools:targetApi="31">
+        <receiver android:name=".SMSReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".MainActivity"
             android:exported="true">

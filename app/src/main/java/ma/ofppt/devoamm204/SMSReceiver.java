@@ -11,19 +11,14 @@ import android.util.Log;
 public class SMSReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(intent.getAction() == Telephony.Sms.Intents.SMS_RECEIVED_ACTION){
-            Bundle bundle = intent.getExtras();
-            if (bundle != null) {
-                Object[] pdus = (Object[])bundle.get("pdus");
-                final SmsMessage[] messages = new SmsMessage[pdus.length];
-                for (int i = 0; i < pdus.length; i++) {
-                    messages[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
-                }
-                if (messages.length > -1) {
-                    Log.i("SMS_TAG", "Message recieved: " + messages[0].getMessageBody());
-                }
-            }
+        if (Telephony.Sms.Intents.SMS_RECEIVED_ACTION.equals(intent.getAction())) {
+            for (SmsMessage smsMessage : Telephony.Sms.Intents.getMessagesFromIntent(intent)) {
+                String messageBody = smsMessage.getMessageBody();
+                String tel = smsMessage.getOriginatingAddress();
+                Log.i("SMS_TAG", messageBody);
+                Log.i("SMS_TAG", tel);
             }
         }
     }
 }
+
