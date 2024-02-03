@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
         filter.addAction("com.omarcomputer.ACTION_MON_BROADCAST_PERSONNALISE");
 
-        this.registerReceiver(receiver,filter);
+        registerReceiver(receiver,filter);
     }
 
     @Override
