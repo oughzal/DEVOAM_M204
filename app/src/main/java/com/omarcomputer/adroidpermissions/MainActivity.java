@@ -17,9 +17,11 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     double latitude;
     double longitude;
-
 
 
     @SuppressLint("MissingPermission")
@@ -66,16 +67,21 @@ public class MainActivity extends AppCompatActivity {
                     binding.txtLongitude.setText("" + longitude);
                     Geocoder geocoder = new Geocoder(getApplicationContext());
                     try {
-                        List<Address> address = geocoder.getFromLocation(latitude,longitude,1);
-                        binding.txtVille.setText(""+address.get(0).getLocality());
-                        binding.txtCountry.setText(""+address.get(0).getCountryName());
-                        String imagePath = "" + address.get(0).getCountryCode()+".png";
-                        AssetManager assetManager = getAssets();
-                        InputStream is = assetManager.open(imagePath.toLowerCase());
-                        Bitmap bitmap = BitmapFactory.decodeStream(is);
-                        binding.flag.setImageBitmap(bitmap);
+                        List<Address> address = geocoder.getFromLocation(latitude, longitude, 1);
+                        binding.txtVille.setText("" + address.get(0).getLocality());
+                        binding.txtCountry.setText("" + address.get(0).getCountryName());
+                        String imagePath = "file:///android_asset/" + address.get(0).getCountryCode() + ".png";
+                        String url ="https://avatars.githubusercontent.com/u/102629143?v=4";
+                        Glide.with(getApplicationContext())
+                                //.asBitmap()
+                                //.load(Uri.parse(imagePath))
+                                .load(Uri.parse(url))
+                               // .load(R.drawable.us)
+                                //.placeholder(R.drawable.us)
+                                .into(binding.flag);
+                        //binding.flag.setImageBitmap(bitmap);
                     } catch (IOException e) {
-                       // throw new RuntimeException(e);
+                        // throw new RuntimeException(e);
                     }
                 }
                 // Implémenter les autres méthodes de LocationListener
