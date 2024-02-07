@@ -6,6 +6,10 @@ android {
     namespace 'com.omarcomputer.androidintents'
     compileSdk 33
 
+    buildFeature{
+        viewBinding = true
+    }
+
     defaultConfig {
         applicationId "com.omarcomputer.androidintents"
         minSdk 25
