@@ -87,82 +87,65 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO : Créer une Intent pour envoyer un
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_SEND);
-                intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT, editMessage.getText().toString());
-                //TODO : créer une Intent pour choisir une application
-                Intent chooser = Intent.createChooser(intent, "Choisir une application");
+        btnSend.setOnClickListener(v -> {
+            // TODO : Créer une Intent pour envoyer un
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT, editMessage.getText().toString());
+            //TODO : créer une Intent pour choisir une application
+            Intent chooser = Intent.createChooser(intent, "Choisir une application");
 
+            startActivity(chooser);
+        });
+
+        btnSendData.setOnClickListener(v -> {
+            //TODO: envoyer le texte à afficher dans MainActivity2
+            Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+            intent.putExtra("title", editMessage.getText().toString());
+            startActivity(intent);
+
+        });
+
+
+        btnShowMap.setOnClickListener(v -> {
+            // TODO : Afficher une position sur la carte
+            //String location = "geo:32.94988983365049, -5.662560173657064";
+            String location = "geo:0,0?q=32.94988983365049, -5.662560173657064(ISTA KHENIFRA(DEV201))";
+            //String location = "geo:0,0?q=20+W+34th+St+10001";
+            //String location = "geo:32.94988983365049, -5.662560173657064?q=restaurants";
+            // Parse the location using the Uri class
+            Uri geoLocUri = Uri.parse(location);
+            // Pass the Uri directly to the Intent constructor
+            Intent intent = new Intent(Intent.ACTION_VIEW, geoLocUri);
+            Intent chooser = Intent.createChooser(intent, "");
+            if (intent.resolveActivity(getPackageManager()) != null) {
                 startActivity(chooser);
             }
         });
 
-        btnSendData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: envoyer le texte à afficher dans MainActivity2
-                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
-                intent.putExtra("title", editMessage.getText().toString());
-                startActivity(intent);
-
+        btnShowCamera.setOnClickListener(v -> {
+            if (checkPermision(Manifest.permission.CAMERA)) {
+                photoLauncher.launch(null);
+            } else {
+                requestPermision(Manifest.permission.CAMERA);
             }
+
+
+             /*
+             Old method : not working
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+               // startActivityForResult(intent,GET_IMAGE_CAPTURE);
+            }
+
+              */
         });
 
+        btnShowGallery.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            chooseImage.launch(intent);
 
-        btnShowMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO : Afficher une position sur la carte
-                //String location = "geo:32.94988983365049, -5.662560173657064";
-                String location = "geo:0,0?q=32.94988983365049, -5.662560173657064(ISTA KHENIFRA(DEV201))";
-                //String location = "geo:0,0?q=20+W+34th+St+10001";
-                //String location = "geo:32.94988983365049, -5.662560173657064?q=restaurants";
-
-                // Parse the location using the Uri class
-                Uri geoLocUri = Uri.parse(location);
-
-                // Pass the Uri directly to the Intent constructor
-                Intent intent = new Intent(Intent.ACTION_VIEW, geoLocUri);
-                Intent chooser = Intent.createChooser(intent, "");
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(chooser);
-                }
-            }
-        });
-
-        btnShowCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkPermision(Manifest.permission.CAMERA)) {
-                    photoLauncher.launch(null);
-                } else {
-                    requestPermision(Manifest.permission.CAMERA);
-                }
-
-
-                 /*
-                 Old method : not working
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                   // startActivityForResult(intent,GET_IMAGE_CAPTURE);
-                }
-
-                  */
-            }
-        });
-
-        btnShowGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                chooseImage.launch(intent);
-
-            }
         });
         btnDialPhone.setOnClickListener(new View.OnClickListener() {
             @Override
