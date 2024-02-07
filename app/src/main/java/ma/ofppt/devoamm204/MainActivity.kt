@@ -3,7 +3,8 @@ package ma.ofppt.devoamm204
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
-import ma.ofppt.devoamm204.databinding.ActivityMainBinding
+import com.omarcomputer.androidintents.R
+import com.omarcomputer.androidintents.databinding.ActivityMainBinding
 import ma.ofppt.devoamm204.fragments.FragmentA
 
 class MainActivity : AppCompatActivity() {

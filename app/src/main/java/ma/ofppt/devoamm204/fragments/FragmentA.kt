@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.omarcomputer.androidintents.R
 import ma.ofppt.devoamm204.R
 
 class FragmentA : Fragment() {
