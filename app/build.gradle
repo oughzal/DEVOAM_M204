@@ -6,7 +6,7 @@ android {
     namespace 'com.omarcomputer.androidintents'
     compileSdk 33
 
-    buildFeature{
+    buildFeatures{
         viewBinding = true
     }
 
